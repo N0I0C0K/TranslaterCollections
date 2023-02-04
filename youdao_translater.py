@@ -60,7 +60,11 @@ class YoudaoTranslater:
 
 def test():
     translater = YoudaoTranslater()
-    pprint(translater.translate("集合"))
+    times = 0
+    while True:
+        pprint(translater.translate(input(">")))
+        times += 1
+        print(times)
 
 
 if __name__ == "__main__":
