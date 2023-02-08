@@ -5,6 +5,7 @@ from requests import session
 from utils import get_useragent
 import time
 import random
+import json
 from rich.pretty import pprint
 
 
@@ -18,12 +19,11 @@ class YoudaoTranslater:
         }
         params = {
             "_npid": "fanyiweb",
-            "_ncat": "event",
+            "_ncat": "pageview",
             "_ncoo": str(2147483647 * random.uniform(0, 1)),
             "_nssn": "NULL",
             "_nver": "1.2.0",
             "_ntms": self.__sticTime(),
-            "_nhrf": "newweb_translate_text",
         }
         self.sess.get("https://rlogs.youdao.com/rlog.php", params=params)
         params = {
@@ -63,14 +63,15 @@ class YoudaoTranslater:
             "keyfrom": "fanyi.web",
         }
 
-    def __decode(self, src: str) -> str:
+    def __decode(self, src: str) -> dict:
         key = b"ydsecret://query/key/B*RGygVywfNBwpmBaZg*WT7SIOUP2T0C9WHMZN39j^DAdaZhAnxvGcCY6VYFwnHl"
         iv = b"ydsecret://query/iv/C@lZe2YzHtZ2CYgaXKSVfsb7Y4QWHjITPPZ0nQp87fBeJ!Iv6v^6fvi2WN@bYpJ4"
         cryptor = AES.new(
             MD5.new(key).digest()[:16], AES.MODE_CBC, MD5.new(iv).digest()[:16]
         )
         res = cryptor.decrypt(base64.urlsafe_b64decode(src))
-        return res.decode("utf-8")
+        txt = res.decode("utf-8")
+        return json.loads(txt[: txt.rindex("}") + 1])
 
     def translate(self, src: str, fromLan: str = "auto", toLan: str = "auto"):
         data = {
@@ -88,10 +89,9 @@ def main():
     translater = YoudaoTranslater()
     times = 0
     while True:
-        pprint(translater.translate("command"))
+        pprint(translater.translate(input(">")))
         times += 1
-        print(f"times: {times}")
-        time.sleep(random.randrange(5, 20) / 10)
+    print(f"times: {times}")
 
 
 if __name__ == "__main__":
