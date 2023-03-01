@@ -30,7 +30,8 @@ class YoudaoTranslater:
             "keyid": "webfanyi-key-getter",
         } | self.__base_body("asdjnjfenknafdfsdfsd")
         res = self.sess.get("https://dict.youdao.com/webtranslate/key", params=params)
-        self.key = res.json()["data"]["secretKey"]
+        t = res.json()
+        self.key = t["data"]["secretKey"]
 
     def get_lan_list(self) -> dict:
         res = self.sess.get(

@@ -26,7 +26,5 @@ if __name__ == "__main__":
     a = YoudaoV2Translater()
     times = 0
     while True:
-        pprint(a.translate("命令"))
+        pprint(a.translate(input(">")))
         times += 1
-        pprint(f"times: {times}")
-        time.sleep(random.randrange(5, 20) / 10)

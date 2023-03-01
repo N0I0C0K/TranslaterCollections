@@ -60,11 +60,7 @@ class YoudaoTranslater:
 
 def test():
     translater = YoudaoTranslater()
-    times = 0
-    while True:
-        pprint(translater.translate(input(">")))
-        times += 1
-        print(times)
+    pprint(translater.translate("命令"))
 
 
 if __name__ == "__main__":
