@@ -12,20 +12,32 @@ from rich.pretty import pprint
 class YoudaoTranslater:
     def __init__(self) -> None:
         self.sess = session()
+        self.sess.proxies = {
+            "http": "http://127.0.0.1:7890",
+            "https": "http://127.0.0.1:7890",
+        }
         self.sess.headers = {
             "User-Agent": get_useragent(),
             "origin": "https://fanyi.youdao.com",
             "referer": "https://fanyi.youdao.com/",
         }
-        params = {
-            "_npid": "fanyiweb",
-            "_ncat": "pageview",
-            "_ncoo": str(2147483647 * random.uniform(0, 1)),
-            "_nssn": "NULL",
-            "_nver": "1.2.0",
-            "_ntms": self.__sticTime(),
-        }
-        self.sess.get("https://rlogs.youdao.com/rlog.php", params=params)
+        # params = {
+        #     "_npid": "fanyiweb",
+        #     "_ncat": "pageview",
+        #     "_ncoo": str(2147483647 * random.uniform(0, 1)),
+        #     "_nssn": "NULL",
+        #     "_nver": "1.2.0",
+        #     "_ntms": self.__sticTime(),
+        # }
+        # self.sess.get("https://rlogs.youdao.com/rlog.php", params=params)
+        self.sess.cookies.set(
+            "OUTFOX_SEARCH_USER_ID_NCOO",
+            f"{random.randint(100000000, 999999999)}.{random.randint(100000000, 999999999)}",
+        )
+        self.sess.cookies.set(
+            "OUTFOX_SEARCH_USER_ID",
+            f"{random.randint(100000000, 999999999)}@{random.randint(1, 255)}.{random.randint(1, 255)}.{random.randint(1, 255)}.{random.randint(1, 255)}",
+        )
         params = {
             "keyid": "webfanyi-key-getter",
         } | self.__base_body("asdjnjfenknafdfsdfsd")
@@ -90,7 +102,7 @@ def main():
     translater = YoudaoTranslater()
     times = 0
     while True:
-        pprint(translater.translate(input(">")))
+        pprint(translater.translate(input(">"), toLan="zh-CHS"))
         times += 1
     print(f"times: {times}")
 

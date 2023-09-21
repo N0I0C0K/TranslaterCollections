@@ -1,16 +1,12 @@
 from requests import session
 from utils import get_useragent
+from rich.pretty import pprint
+from translators.server import QQFanyi
 
+a = QQFanyi()
+pprint(a.qqFanyi_api('hello', is_detail_result=True))
+pprint(a.language_map)
 
-class TencetTranslater:
-    def __init__(self) -> None:
-        self.sess = session()
-        self.sess.headers = {
-            "User-Agent": get_useragent(),
-            "Origin": "https://fanyi.qq.com",
-            "Referer": "https://fanyi.qq.com/",
-        }
-        self.sess.post("https://otheve.beacon.qq.com/analytics/upload?tp=js", data={})
 
 
 if __name__ == "__main__":
