@@ -102,7 +102,7 @@ def main():
     translater = YoudaoTranslater()
     times = 0
     while True:
-        pprint(translater.translate(input(">"), toLan="zh-CHS"))
+        pprint(translater.translate(input(">"), toLan="auto"))
         times += 1
     print(f"times: {times}")
 
